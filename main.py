@@ -17,6 +17,58 @@ GPIO.setwarnings(False)
 Buzz = None
 db_connection = None
 
+# ------------------------ DATABASE SANDBOX--------------------------------------------------
+
+database = r""
+sql_create_projects_table = """ CREATE TABLE IF NOT EXISTS warunki (
+id integer PRIMARY KEY,
+temperatura float NOT NULL,
+wilgotnosc float NOT NULL
+); """
+
+conn = create_connection(database)
+if conn is not None:
+    create_table(conn, sql_create_projects_table)
+    print("Connected to database")
+else:
+    print("Error! cannot create the database connection.")
+
+with conn:
+    create_war(conn, (j, avg_t, avg_h))
+
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM warunki")
+print(cursor.fetchall())
+
+# ------------------------ DATABASE--------------------------------------------------
+
+def create_connection(db_file):
+    global db_connection
+    try:
+        db_connection = sqlite3.connect(db_file)
+        return db_connection
+    except Error as e:
+        print(e)
+        show_text_lcd(e)
+    
+    
+def create_table(conn, create_table_sql):
+    try:
+        c = conn.cursor()
+        c.execute(create_table_sql)
+    except Error as e:
+        print(e)
+    
+
+def create_war(conn, war):
+    sql = ''' INSERT INTO warunki(id, temperatura, wilgotnosc)
+    VALUES(?,?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, war)
+    conn.commit()
+    return cur.lastrowid
+
+
 #--------------------------------EMBEEDED XD------------------------------------------------------
 def init():
     global Buzz
@@ -25,6 +77,15 @@ def init():
 
     Buzz = GPIO.PWM(pins["BUZZER"], 440)
     Buzz.start(50)
+
+
+def playtone(frequency): #TODO: use it
+    buzzer.duty_u16(1000)
+    buzzer.freq(frequency)
+
+
+def bequiet(): #TODO: use it
+    buzzer.duty_u16(0)
 
 
 def light_diode(addr: list):
