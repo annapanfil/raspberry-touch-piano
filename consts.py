@@ -1,5 +1,5 @@
 
-pins =  {
+pins_out =  {
     "MAIN_MUX_ADDR_A": 14,
     "MAIN_MUX_ADDR_B": 15,
     "FIRST_MUX_ADDR_A": 18,
@@ -15,6 +15,9 @@ pins =  {
     "LCD_D7": 0
 }
 
+pins_in = {
+    
+}
 
 diodes = {
     'C1': [1,0,0,0],

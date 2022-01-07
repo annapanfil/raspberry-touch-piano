@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS Songs (
 
 CREATE TABLE IF NOT EXISTS Sounds_in_songs (
     song_id integer NOT NULL,
-     sound_number integer NOT NULL,
+    sound_number integer NOT NULL,
     sound_name varchar NOT NULL,
     sound_length float NOT NULL,
     FOREIGN KEY(song_id) REFERENCES Songs(id)
