@@ -105,8 +105,13 @@ def choose_option_songs_menu():
 
 def main():
     show_text_lcd("Dzien dobry!")
-    #TODO: light all diodes in order
-    time.sleep(2)
+
+    # wave on diodes
+    for diode in diodes.vals():
+        light_diode(diode)
+        time.sleep(0.1)
+    light_off()
+
     conn = create_connection("piano.db")
     if conn == None:
         show_text_lcd("Brak bazy piosenek")
