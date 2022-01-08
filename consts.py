@@ -16,7 +16,7 @@ pins_out =  {
 }
 
 pins_in = {
-    
+
 }
 
 diodes = {

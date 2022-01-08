@@ -1,4 +1,7 @@
 import RPi.GPIO as GPIO
+from RPLCD import CharLCD
+
+DEBUG = 1  # enable console output
 
 #--------------------------------EMBEEDED---------------------------------------
 
@@ -20,6 +23,7 @@ def init():
 
     buzzer = GPIO.PWM(pins_out["BUZZER"], 440)
     buzzer.start(50)
+    if DEBUG: print("Initialization completed successfully")
 
 
 def play_tone(frequency):
@@ -36,6 +40,7 @@ def be_quiet():
 
 
 def light_diode(addr: list):
+    if DEBUG: print("diode", addr, "is on")
     GPIO.output(pins_out["MAIN_MUX_Y"], GPIO.HIGH)
     GPIO.output(pins_out["MAIN_MUX_X"], GPIO.HIGH)
     GPIO.output(pins_out["MAIN_MUX_ADDR_A"], addr[0])
@@ -47,44 +52,54 @@ def light_diode(addr: list):
 def light_off():
     """Turn off all diodes"""
 
+    if DEBUG: print("diodes are off")
     GPIO.output(pins_out["MAIN_MUX_Y"], GPIO.LOW)
     GPIO.output(pins_out["MAIN_MUX_X"], GPIO.LOW)
 
 
 def play_sound(note: str, beat = 0.01):
     """Play tone on the buzzer and light the diode for certain time"""
+
     light_diode(diodes[note])
     play_tone(sounds[note]) #TODO: play 2 sounds
+    if DEBUG: print("playing sound: ", note)
     time.sleep(beat*0.13)
     be_quiet()
     light_off()
 
 
-def show_text_lcd(text: str):
-    print("ON LCD:", text)
-    #TODO: show on LCD
-    pass
+def show_text_lcd(text: str, line = 1: int):
+    """Show text on lcd (accepts \n\r)"""
+
+    lcd = CharLCD(numbering_mode=GPIO.BCM, cols=16, rows=2, pin_rs=LCD_RS, pin_e=LCD_E, pins_data=[LCD_D4, LCD_D5, LCD_D6, LCD_D7])
+
+    lcd.cursor_pos = (line, 0)
+    lcd.write_string(text)
+    if DEBUG: print("ON LCD:", text)
 
 
 def get_key():
     #TODO: check on gpio
-    pass
+    # return "C1"
 
 # ----------------------------------- HELPFUL ----------------------------------
 
 def on_click_button_up():
     global option_chosen
+    if DEBUG: print("Button UP pressed")
     option_chosen -= 1
     refresh_menu()
 
 
 def on_click_button_down():
     global option_chosen
+    if DEBUG: print("Button DOWN pressed")
     option_chosen += 1
     refresh_menu()
 
 
 def on_click_button_ok():
+    if DEBUG: print("Button OK pressed")
     if current_menu == 0:
         choose_option_main_menu()
     elif current_menu in (1,2):
@@ -92,6 +107,7 @@ def on_click_button_ok():
 
 
 def check_keys():
+    if DEBUG: print("Checking keys...")
     for key in piano_keys.keys():
         if get_key(key):
             return key
