@@ -1,6 +1,6 @@
 #TODO:
 # - dwa dźwięki na raz (numer_dźwięku)
-# klawisze, LCD
+# klawisze
 
 import time
 from consts import *
@@ -107,7 +107,7 @@ def main():
     show_text_lcd("Dzien dobry!")
 
     # wave on diodes
-    for diode in diodes.vals():
+    for diode in diodes.values():
         light_diode(diode)
         time.sleep(0.1)
     light_off()
@@ -123,4 +123,9 @@ def main():
 # ------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    main()
+    init()
+    # for diode in diodes.values():
+    #     light_diode(diode)
+    #     time.sleep(1.5)
+    # light_off()
+    show_text_lcd("hello lerld")

@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from RPLCD import CharLCD
+from consts import *
 
 DEBUG = 1  # enable console output
 
@@ -7,22 +8,22 @@ DEBUG = 1  # enable console output
 
 def init():
     """"Initialize GPIO pins and all devices"""
-    global buzzer
+    # global buzzer
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
     for pin in pins_out.keys():
         GPIO.setup(pins_out[pin], GPIO.OUT)
-    for button in buttons.keys():
-        GPIO.setup(buttons[button], GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # an input pin, set initial value to be pulled low (off)
-
-    GPIO.add_event_detect(buttons["up"], GPIO.RISING, callback = on_click_button_up) # Setup event on rising edge
-    GPIO.add_event_detect(buttons["down"], GPIO.RISING, callback = on_click_button_down)
-    GPIO.add_event_detect(buttons["ok"], GPIO.RISING, callback = on_click_button_ok)
-
-    buzzer = GPIO.PWM(pins_out["BUZZER"], 440)
-    buzzer.start(50)
+    # for button in buttons.keys():
+    #     GPIO.setup(buttons[button], GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # an input pin, set initial value to be pulled low (off)
+    #
+    # GPIO.add_event_detect(buttons["up"], GPIO.RISING, callback = on_click_button_up) # Setup event on rising edge
+    # GPIO.add_event_detect(buttons["down"], GPIO.RISING, callback = on_click_button_down)
+    # GPIO.add_event_detect(buttons["ok"], GPIO.RISING, callback = on_click_button_ok)
+    #
+    # buzzer = GPIO.PWM(pins_out["BUZZER"], 440)
+    # buzzer.start(50)
     if DEBUG: print("Initialization completed successfully")
 
 
@@ -45,8 +46,8 @@ def light_diode(addr: list):
     GPIO.output(pins_out["MAIN_MUX_X"], GPIO.HIGH)
     GPIO.output(pins_out["MAIN_MUX_ADDR_A"], addr[0])
     GPIO.output(pins_out["MAIN_MUX_ADDR_B"], addr[1])
-    GPIO.output(pins_out["FIRST_MUX_ADDR_A"], addr[2])
-    GPIO.output(pins_out["FIRST_MUX_ADDR_B"], addr[3])
+    GPIO.output(pins_out["ALL_MUX_ADDR_A"], addr[2])
+    GPIO.output(pins_out["ALL_MUX_ADDR_B"], addr[3])
 
 
 def light_off():
@@ -68,10 +69,10 @@ def play_sound(note: str, beat = 0.01):
     light_off()
 
 
-def show_text_lcd(text: str, line = 1: int):
+def show_text_lcd(text: str, line = 1):
     """Show text on lcd (accepts \n\r)"""
 
-    lcd = CharLCD(numbering_mode=GPIO.BCM, cols=16, rows=2, pin_rs=LCD_RS, pin_e=LCD_E, pins_data=[LCD_D4, LCD_D5, LCD_D6, LCD_D7])
+    lcd = CharLCD(numbering_mode=GPIO.BCM, cols=16, rows=2, pin_rs=pins_out["LCD_RS"], pin_e=pins_out["LCD_E"], pins_data=[pins_out["LCD_D4"], pins_out["LCD_D5"], pins_out["LCD_D6"], pins_out["LCD_D7"]])
 
     lcd.cursor_pos = (line, 0)
     lcd.write_string(text)
@@ -81,6 +82,7 @@ def show_text_lcd(text: str, line = 1: int):
 def get_key():
     #TODO: check on gpio
     # return "C1"
+    pass
 
 # ----------------------------------- HELPFUL ----------------------------------
 
