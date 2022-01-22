@@ -42,7 +42,7 @@ def be_quiet():
 
 def light_diode(addr: list):
     if DEBUG: print("diode", addr, "is on")
-    GPIO.output(pins_out["MAIN_MUX_Y"], GPIO.HIGH)
+    # GPIO.output(pins_out["MAIN_MUX_Y"], GPIO.HIGH)
     GPIO.output(pins_out["MAIN_MUX_X"], GPIO.HIGH)
     GPIO.output(pins_out["MAIN_MUX_ADDR_A"], addr[0])
     GPIO.output(pins_out["MAIN_MUX_ADDR_B"], addr[1])
