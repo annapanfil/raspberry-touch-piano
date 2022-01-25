@@ -120,14 +120,6 @@ def show_text_lcd(text: str, line = 1):
     if DEBUG: print("ON LCD:", text)
 
 
-def get_key():
-    #TODO: check on gpio
-    # return "C1"
-    return None
-
-
-
-
 # ----------------------------------- HELPFUL ----------------------------------
 
 def on_click_button_up(arg):
@@ -152,23 +144,17 @@ def on_click_button_ok(arg):
         choose_option_songs_menu()
 
 
-def check_keys():
+def check_keys_old():
     # global cap
     if DEBUG: print("Checking keys...")
-    # for key in piano_keys.keys():
-    #     if get_key(key):
-    #         return key
-    # return None
 
     # read a and b (which of the fours were pressed 00/01/10/11)
-    GPIO.output(pins_out["ADDR_A"], 0)
-    GPIO.output(pins_out["ADDR_B"], 0)
+    GPIO.output(pins_out["ADDR_A"], 1)
+    GPIO.output(pins_out["ADDR_B"], 1)
 
     # read adafruit pins (which of x and y were pressed)
     last_touched = cap.touched()
     while True:
-
-
         current_touched = cap.touched()
         for i in range(12):
             pin_bit = 1 << i
@@ -180,6 +166,43 @@ def check_keys():
 
         last_touched = current_touched
         time.sleep(0.1)
+
+def check_keys():
+    # global cap
+    if DEBUG: print("Checking keys...")
+
+    # for i in [00, 01, 10, 11]:
+    #if sygnał_z_ady == numer_multipleksera:
+    #    graj odpowiedni dźwięk (z odpowiedniego muxa i adresu w nim)
+
+    # read adafruit pins (which of x and y were pressed)
+    last_touched = cap.touched()
+    while True:
+
+        for el in [[0,1], [0,0], [1,0], [1,1]]:
+            A = el[0]
+            B = el[1]
+
+            # read a and b (which of the fours were pressed 00/01/10/11, format: AB)
+            GPIO.output(pins_out["ADDR_A"], A)
+            GPIO.output(pins_out["ADDR_B"], B)
+
+            # read which multiplexer and if x or y were activated
+            current_touched = cap.touched()
+            # print(current_touched)
+            for i in range(12):
+                pin_bit = 1 << i
+                if current_touched & pin_bit and not last_touched & pin_bit:
+                    key = key_muxes[i] + str(A) + str(B)
+                    print(f'Touched! {key_muxes[i]}{A}{B} {piano_keys[key]}')
+                    light_diode(diodes[piano_keys[key]])
+
+                # if not current_touched & pin_bit and last_touched & pin_bit:
+                #     light_off()
+
+
+            last_touched = current_touched
+            time.sleep(0.1)
 
 #----------------------------------THE VIP FUNCTIONS-----------------------------------------------------------
 
@@ -306,9 +329,9 @@ if __name__ == "__main__":
     # main()
     init()
     # wave on diodes
-    for diode in diodes.values():
-        light_diode(diode)
-        time.sleep(0.1)
-    light_off()
+    # for diode in diodes.values():
+    #     light_diode(diode)
+    #     time.sleep(0.1)
+    # light_off()
     # play_sound("E2", 0.5)
     check_keys()

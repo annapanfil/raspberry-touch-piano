@@ -62,7 +62,41 @@ buttons = {
     "ok": 9
 }
 
-piano_keys = {}
+key_muxes = {
+    10: "RX",
+    11: "RY",
+    6: "GY",
+    5: "GX",
+    1: "BY",
+    0: "BX"
+}
+
+piano_keys = {
+    "BX01": "C1",
+    "BX10": "Cs1",
+    "BY11": "D1"
+    "BY01": "Ds1",
+    "BY00": "E1",
+    "BY10": "F1",
+    "BX11": "Fs1",
+    "BX00": "G1",
+    "GX01": "Gs1",
+    "GX10": "A1",
+    "GY11": "As1", # bardzo słabo działa
+    "GY01": "H1", # włącza się niespodziewanie
+    "GY00": "C2", # słabo działa
+    "GY10": "Cs2", # bardzo słabo działa (czasem C2)
+    "GX11": "D2",
+    "GX00": "Ds2",
+    "RX01": "E2", #czasem F2
+    "RX10": "F2", #czasem E2
+    "RY11": "Fs2",
+    "RY01": "G2",
+    "RY00": "Gs2", #słabo działa
+    "RY10": "A2",
+    "RX11": "As2",
+    "RX00": "H2",
+}
 
 
 sounds = {
@@ -156,4 +190,3 @@ sounds = {
     "D8": 4699,
     "DS8": 4978
 }
-
