@@ -8,7 +8,7 @@ def create_connection(db_file):
 
     global conn
     try:
-        conn = sqlite3.connect(db_file)
+        conn = sqlite3.connect(db_file, check_same_thread=False)
         print("Connected to database")
         return conn
     except Error as e:
@@ -17,13 +17,13 @@ def create_connection(db_file):
         return None
 
 
-def get_max_song_id():
+def get_max_song_id(connection):
     """How many songs in the database"""
 
-    global max_song_id
-    cursor = conn.cursor()
-    cursor.execute(f'SELECT id FROM songs ORDER BY id LIMIT 1')
-    max_song_id = cursor.fetchall()[0][0]
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM Songs")
+    max_song_id = cursor.fetchone()[0] - 1
+    print("max_song_id", max_song_id)
     cursor.close()
     return max_song_id
 
@@ -32,7 +32,9 @@ def get_song(song_id):
     """Get all sounds in the song"""
 
     global conn
+    print("get_song")
     cursor = conn.cursor()
+    print("cursor created")
     cursor.execute(f'SELECT sound_name, sound_length FROM Sounds_in_songs WHERE song_id = {song_id} ORDER BY sound_number')
     song = cursor.fetchall()
     cursor.close()
