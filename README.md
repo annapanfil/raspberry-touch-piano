@@ -5,7 +5,7 @@
 ![tył urządzenia](https://user-images.githubusercontent.com/55759533/154842186-a3fd6bd8-f2f5-47c6-9c44-6d79fd3a8947.jpg)
 
 
-## Cel i zakres projektu.
+## Cel i zakres projektu
 
 Celem projektu było zbudowanie elektronicznego pianina z dwiema oktawami umożliwiającego grę i naukę nowych utworów. 
 
