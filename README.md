@@ -9,7 +9,7 @@
 
 Celem projektu było zbudowanie elektronicznego pianina z dwiema oktawami umożliwiającego grę i naukę nowych utworów. 
 
-![Link do filmu prezentującego działanie urządzenia](https://drive.google.com/file/d/13YwG8BwCzGuzHZQqKEZ0cRvVdIGhbyhH/view)
+[Link do filmu prezentującego działanie urządzenia](https://drive.google.com/file/d/1mFqqmkyDu-PqmkuYOTUbU2u2GKzdyF2n/view?usp=sharing)
 
 ## Sprzęt
 Wykorzystana platforma sprzętowa, czujniki pomiarowe, elementy wykonawcze:
